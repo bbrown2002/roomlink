@@ -3,7 +3,11 @@ import random
 
 st.markdown("## 🧑‍🤝‍🧑 Available Roommates")
 
-# Sample data to randomize
+# Filters
+selected_location = st.selectbox("📍 Filter by Location", ["Any"] + ["Downtown", "Northside", "Rams Commons", "Near WSSU Library", "Midtown", "East Winston", "Salem Lake", "West End"])
+selected_vibe = st.selectbox("🧠 Filter by Vibe", ["Any"] + ["Quiet", "Clean freak", "Chill", "Sociable", "Early sleeper", "Night owl", "Smoker", "Pet friendly", "Gamer", "Gym rat"])
+
+# Sample data
 first_names = ["Ava", "Jaylen", "Maya", "Elijah", "Naomi", "Zion", "Jasmine", "Kai", "Nia", "Malik", "Deja", "Tre", "Sarai", "Khalil", "Skye"]
 majors = ["Pre-nursing", "Engineering", "Creative Writing", "Sociology", "Biology", "Pre-Med", "Psychology", "Business", "Art", "Music"]
 vibes = ["Quiet", "Clean freak", "Chill", "Sociable", "Early sleeper", "Night owl", "Smoker", "Pet friendly", "Gamer", "Gym rat"]
@@ -25,11 +29,16 @@ def generate_roommate():
         "img": f"https://randomuser.me/api/portraits/{gender}/{image_id}.jpg",
         "bio": bio,
         "price": price,
-        "location": location
+        "location": location,
+        "vibes": [vibe1, vibe2]
     }
 
-# Generate 10 fresh roommates
-roommates = [generate_roommate() for _ in range(10)]
+# Generate and filter roommates
+roommates = [generate_roommate() for _ in range(20)]
+if selected_location != "Any":
+    roommates = [rm for rm in roommates if rm["location"] == selected_location]
+if selected_vibe != "Any":
+    roommates = [rm for rm in roommates if selected_vibe in rm["vibes"]]
 
 # Display in rows of 5
 for i in range(0, len(roommates), 5):
@@ -43,6 +52,7 @@ for i in range(0, len(roommates), 5):
                 st.caption(f"{rm['bio']}")
                 st.markdown(f"💸 {rm['price']}  \n📍 {rm['location']}")
                 st.button("View Profile", key=f"profile_{i+idx}")
+
 st.markdown("---")
 st.markdown("## 📍 Platform Overview")
 
