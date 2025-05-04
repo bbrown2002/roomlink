@@ -1,172 +1,107 @@
 import streamlit as st
+from PIL import Image
 
-st.markdown("## 🧑‍🤝‍🧑 Available Roommates")
+# --- Page Configuration ---
+st.set_page_config(
+    page_title="RoomLink | Find Your Next Roommate",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
-# ====== FILTERS ======
-selected_location = st.selectbox("📍 Filter by Location", ["Any", "Downtown", "Ardmore", "West End", "Old Salem", "Peters Creek", "Cloverdale", "Washington Park", "University Parkway", "Reynolda Village"])
-selected_vibe = st.selectbox("🧠 Filter by Vibe", ["Any", "Quiet", "Clean freak", "Chill", "Sociable", "Early sleeper", "Night owl", "Smoker", "Pet friendly", "Gamer", "Gym rat"])
-selected_gender = st.selectbox("⚧️ Filter by Gender", ["Any", "Male", "Female"])
-
-# ====== TRAITS ======
-vibe_traits = ["Quiet", "Clean freak", "Chill", "Sociable", "Early sleeper", "Night owl", "Smoker", "Pet friendly", "Gamer", "Gym rat"]
-locations = ["Downtown", "Ardmore", "West End", "Old Salem", "Peters Creek", "Cloverdale", "Washington Park", "University Parkway", "Reynolda Village"]
-majors = ["Pre-nursing", "Engineering", "Creative Writing", "Sociology", "Biology", "Pre-Med", "Psychology", "Business", "Art", "Music"]
-
-male_names = [
-    "Jaylen", "Elijah", "Zion", "Kai", "Malik", "Tre", "Khalil", "Jordan", "Isaiah", "Tyrese",
-    "Miles", "Andre", "Darius", "Xavier", "Quincy", "Eli", "Devin", "Amari", "Cameron", "Noah",
-    "Logan", "Micah", "Trey", "Omar", "Nasir"
-]
-
-female_names = [
-    "Ava", "Maya", "Naomi", "Jasmine", "Nia", "Deja", "Sarai", "Skye", "Imani", "Riley",
-    "Tiana", "Zoe", "Layla", "Autumn", "Brielle", "Camille", "Faith", "Gianna", "Haven", "India",
-    "Jada", "Kori", "Lena", "Melody", "Nova"
-]
-
-# ====== BUILD STATIC LIST ======
-roommate_data = []
-
-for i in range(25):
-    vibes = [vibe_traits[i % len(vibe_traits)], vibe_traits[(i + 4) % len(vibe_traits)]]
-    roommate_data.append({
-        "name": f"{male_names[i]}, {19 + i % 6}",
-        "gender": "Male",
-        "bio": f"{majors[i % len(majors)]} major. {vibes[0]}. {vibes[1]}.",
-        "price": f"${550 + (i % 6) * 25}/mo",
-        "location": locations[i % len(locations)],
-        "vibes": vibes
-    })
-
-for i in range(25):
-    vibes = [vibe_traits[(i + 1) % len(vibe_traits)], vibe_traits[(i + 5) % len(vibe_traits)]]
-    roommate_data.append({
-        "name": f"{female_names[i]}, {19 + i % 6}",
-        "gender": "Female",
-        "bio": f"{majors[(i + 3) % len(majors)]} major. {vibes[0]}. {vibes[1]}.",
-        "price": f"${575 + (i % 6) * 20}/mo",
-        "location": locations[(i + 2) % len(locations)],
-        "vibes": vibes
-    })
-
-# ====== FILTER RESULTS ======
-filtered = roommate_data
-if selected_location != "Any":
-    filtered = [r for r in filtered if r["location"] == selected_location]
-if selected_vibe != "Any":
-    filtered = [r for r in filtered if selected_vibe in r["vibes"]]
-if selected_gender != "Any":
-    filtered = [r for r in filtered if r["gender"] == selected_gender]
-
-# ====== DISPLAY PROFILES ======
-for i in range(0, len(filtered), 5):
-    cols = st.columns(5)
-    for j, col in enumerate(cols):
-        if i + j < len(filtered):
-            r = filtered[i + j]
-            with col:
-                st.markdown(f"**{r['name']}**")
-                st.caption(r["bio"])
-                st.markdown(f"💸 {r['price']}  \n📍 {r['location']}")
-                st.button("View Profile", key=f"profile_{i+j}")
-
-st.markdown("---")
-st.markdown("## 📍 Platform Overview")
-
+# --- App Branding ---
 st.markdown("""
-RoomLink is a modern, student-centered web application designed to help users find safe, affordable off-campus housing and connect with compatible roommates. It addresses the most common pain points students face — limited verified listings, unreliable roommate sources, and no centralized way to filter based on lifestyle or budget.
+    <style>
+    .roomlink-header {
+        font-size: 42px;
+        font-weight: 800;
+        color: #B31B1B;
+        letter-spacing: -1px;
+        margin-bottom: 0;
+    }
+    .roomlink-sub {
+        font-size: 20px;
+        color: #444;
+        margin-top: 0;
+    }
+    .cta-button {
+        font-size: 18px;
+        padding: 0.75rem 1.5rem;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-Unlike outdated rental boards or sketchy group chats, RoomLink combines clean design with smart logic to make off-campus housing less stressful and more strategic.
-
-### 🧠 Why RoomLink?
-
-- **For Students, By Students**: Every feature is tailored toward the student lifestyle — from flexible lease filters to roommate matching by sleep schedule.
-- **Verified Housing Data**: Listings include rent, rules, distance, and more — structured in a way that’s easy to compare.
-- **Lifestyle-Based Matching**: Instead of random pairings, RoomLink learns your habits and matches you with roommates you’ll actually get along with.
-- **Simple, Secure, and Scalable**: This version is a fully functioning prototype built using Streamlit and Python, but the structure supports future growth with messaging, verification, and school email sign-on.
-""")
+# --- Header ---
+st.markdown('<p class="roomlink-header">RoomLink</p>', unsafe_allow_html=True)
+st.markdown('<p class="roomlink-sub">Student Housing Made Safe, Smart, and Social</p>', unsafe_allow_html=True)
 
 st.markdown("---")
-st.markdown("## 🔑 Feature Highlights")
 
-col1, col2 = st.columns(2)
+# --- Main Hero Section ---
+col1, col2 = st.columns([1, 1])
 
 with col1:
-    st.subheader("📬 Housing Listing Submission")
+    st.subheader("🏠 Welcome to RoomLink")
     st.markdown("""
-    Any user can submit available housing using a simple form that collects:
-    - Property address
-    - Rent amount
-    - Lease type and terms
-    - Pet/smoking policies
-    - Optional image links or notes
+    **RoomLink** is a web-based housing and roommate discovery tool built specifically for college students in Winston-Salem. Whether you’re looking for a safe off-campus place to stay or a compatible roommate with the same sleep schedule and study habits, we make the process simple and smart.
 
-    All data is displayed on a clean listings page so students can browse and filter options easily.
+    We created this platform because students deserve better than unreliable group chats and random roommate assignments. RoomLink puts everything you need in one place—filtered by what actually matters: location, budget, lifestyle, and trust.
+
+    🔒 Verified by school communities  
+    🛏️ Filtered by lifestyle preferences  
+    💬 Built with students in mind
     """)
+
+    st.markdown("### 🚀 Get Started:")
+    if st.button("🧑‍🤝‍🧑  Find a Roommate"):
+        st.switch_page("pages/roommate_directory.py")
+
+    if st.button("🏡  Find Housing"):
+        st.switch_page("pages/housing_listings.py")
+
+    if st.button("📝  Submit Your Info"):
+        st.switch_page("pages/roommate_form.py")
 
 with col2:
-    st.subheader("📝 Roommate Match Form")
-    st.markdown("""
-    Our match form collects detailed lifestyle information:
-    - Sleep schedule (early riser vs night owl)
-    - Cleanliness rating
-    - Social habits and guest policy
-    - Preferred noise level, pets, smoking
-
-    Users are matched based on overlapping preferences, not just availability.
-    """)
+    st.image("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=870&q=80", caption="Off-campus living, simplified", use_column_width=True)
 
 st.markdown("---")
-st.markdown("## 💻 Technologies Used")
+
+# --- How It Works Section ---
+st.subheader("📚 How It Works")
 
 st.markdown("""
-RoomLink was designed to be scalable, fast, and accessible to anyone. The current build uses:
+RoomLink is divided into three main parts, all connected to make roommate and housing decisions less chaotic:
 
-- **Streamlit**: To create a clean Python-powered UI with instant deployment.
-- **GitHub**: For version control, project structure, and collaboration.
-- **Google Forms/Sheets (optional)**: For mock backend data storage if needed.
-- **RandomUser API**: To simulate real-world profiles without privacy concerns.
-- **Python**: For all data handling, user logic, and future backend compatibility.
+1. **Roommate Directory**  
+   View a list of verified student profiles, complete with bio details, lifestyle habits, rent range, and location. Use filters to narrow by compatibility and click to view more.
 
-The project is hosted publicly on GitHub and deployable through Streamlit Cloud for real-time access.
+2. **Housing Listings**  
+   Explore available rooms and apartments submitted by students and local hosts. Listings include rent, location, lease terms, pet/smoking rules, and contact info.
+
+3. **Submit Your Info**  
+   Add yourself to the roommate pool or list your available property. Our forms ask all the right questions: sleep habits, guest rules, cleaning standards, and more.
+
+Each submission helps build a stronger, safer student housing network in Winston-Salem.
 """)
 
 st.markdown("---")
-st.markdown("## 📈 Future Roadmap")
+
+# --- Trust & Community Section ---
+st.subheader("🔐 Built on Trust")
 
 st.markdown("""
-RoomLink is designed to grow beyond a prototype. The structure supports features that could turn it into a full SaaS platform for student housing, including:
+RoomLink was designed with one thing in mind: **student safety**. That means verified users, protected data, and profiles that reflect real student lifestyles—not just avatars and anonymous posts.
 
-- 🔐 **School Email Verification**: Limit access to verified students only.
-- 💬 **Built-in Messaging**: Let users connect through the app once matched.
-- 🧾 **Contract Assistance**: Auto-generate lease templates or agreement forms.
-- 🔎 **Advanced Filtering**: Add map views, ratings, and affordability calculators.
-- 📲 **Mobile Optimization**: Convert to PWA or mobile-first layout with responsive design.
+✅ Users must confirm school affiliation in forms  
+✅ Listings are reviewed for clarity and relevance  
+✅ Lifestyle compatibility is prioritized over random pairings
+
+It’s not just about housing—it’s about building a living situation that works.
+
+Want features like messaging, school email sign-in, and verified reviews? That’s coming next. We’re just getting started.
 """)
 
 st.markdown("---")
-st.markdown("## 🚀 How to Use RoomLink")
 
-st.markdown("""
-Getting started is simple:
-1. Use the sidebar to **submit your roommate preferences** or **list your available room**.
-2. Browse the **available listings** and **read profile summaries**.
-3. Use the information provided to reach out directly and make the right housing decision.
-
-As a tool built by students for students, RoomLink centers accessibility, trust, and simplicity.
-""")
-
-st.markdown("---")
-st.markdown("## 🧾 Credits & Acknowledgements")
-
-st.markdown("""
-RoomLink was developed by **Braxton Brown** as part of a computer science project focused on solving real-world student problems through smart, user-friendly technology. The project combines front-end design, back-end logic, and a clear focus on user needs.
-
-**Special thanks to:**
-- Winston-Salem State University
-- Open-source communities (Streamlit, RandomUser, GitHub)
-- Students who shared roommate horror stories that inspired this 😂
-""")
-
-st.markdown("---")
-st.caption("RoomLink © 2025 — Developed by Braxton Brown & Ridgill Jenkins  | GitHub: @bbrown2002")
+# --- Footer ---
+st.caption("RoomLink © 2025 — Developed by Braxton Brown | Inspired by Roomi, focused on students")
