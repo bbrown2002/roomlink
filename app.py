@@ -1,57 +1,55 @@
-import streamlit as st
 import random
+import streamlit as st
 
 st.markdown("## 🧑‍🤝‍🧑 Available Roommates")
 
-# Filters
+# ====== FILTERS ======
 selected_location = st.selectbox("📍 Filter by Location", ["Any"] + ["Downtown", "Northside", "Rams Commons", "Near WSSU Library", "Midtown", "East Winston", "Salem Lake", "West End"])
 selected_vibe = st.selectbox("🧠 Filter by Vibe", ["Any"] + ["Quiet", "Clean freak", "Chill", "Sociable", "Early sleeper", "Night owl", "Smoker", "Pet friendly", "Gamer", "Gym rat"])
 
-# Sample data
-first_names = ["Ava", "Jaylen", "Maya", "Elijah", "Naomi", "Zion", "Jasmine", "Kai", "Nia", "Malik", "Deja", "Tre", "Sarai", "Khalil", "Skye"]
-majors = ["Pre-nursing", "Engineering", "Creative Writing", "Sociology", "Biology", "Pre-Med", "Psychology", "Business", "Art", "Music"]
-vibes = ["Quiet", "Clean freak", "Chill", "Sociable", "Early sleeper", "Night owl", "Smoker", "Pet friendly", "Gamer", "Gym rat"]
+# ====== TRAITS ======
+vibe_traits = ["Quiet", "Clean freak", "Chill", "Sociable", "Early sleeper", "Night owl", "Smoker", "Pet friendly", "Gamer", "Gym rat"]
 locations = ["Downtown", "Northside", "Rams Commons", "Near WSSU Library", "Midtown", "East Winston", "Salem Lake", "West End"]
-genders = ["men", "women"]
+majors = ["Pre-nursing", "Engineering", "Creative Writing", "Sociology", "Biology", "Pre-Med", "Psychology", "Business", "Art", "Music"]
 
-def generate_roommate():
-    gender = random.choice(genders)
-    image_id = random.randint(0, 99)
-    name = random.choice(first_names)
-    age = random.randint(19, 25)
-    major = random.choice(majors)
-    vibe1, vibe2 = random.sample(vibes, 2)
-    location = random.choice(locations)
-    price = f"${random.randint(500, 750)}/mo"
-    bio = f"{major} major. {vibe1}. {vibe2}."
-    return {
-        "name": f"{name}, {age}",
-        "img": f"https://randomuser.me/api/portraits/{gender}/{image_id}.jpg",
-        "bio": bio,
-        "price": price,
-        "location": location,
-        "vibes": [vibe1, vibe2]
-    }
+# ====== BUILD STATIC LIST ======
+roommate_data = []
 
-# Generate and filter roommates
-roommates = [generate_roommate() for _ in range(20)]
+for i in range(25):
+    roommate_data.append({
+        "name": f"Male Student {i+1}, {random.randint(19, 25)}",
+        "bio": f"{random.choice(majors)} major. {random.choice(vibe_traits)}. {random.choice(vibe_traits)}.",
+        "price": f"${random.randint(500, 750)}/mo",
+        "location": random.choice(locations),
+        "vibes": random.sample(vibe_traits, 2)
+    })
+
+for i in range(25):
+    roommate_data.append({
+        "name": f"Female Student {i+1}, {random.randint(19, 25)}",
+        "bio": f"{random.choice(majors)} major. {random.choice(vibe_traits)}. {random.choice(vibe_traits)}.",
+        "price": f"${random.randint(500, 750)}/mo",
+        "location": random.choice(locations),
+        "vibes": random.sample(vibe_traits, 2)
+    })
+
+# ====== FILTER RESULTS ======
 if selected_location != "Any":
-    roommates = [rm for rm in roommates if rm["location"] == selected_location]
+    roommate_data = [r for r in roommate_data if r["location"] == selected_location]
 if selected_vibe != "Any":
-    roommates = [rm for rm in roommates if selected_vibe in rm["vibes"]]
+    roommate_data = [r for r in roommate_data if selected_vibe in r["vibes"]]
 
-# Display in rows of 5
-for i in range(0, len(roommates), 5):
+# ====== DISPLAY CARDS ======
+for i in range(0, len(roommate_data), 5):
     cols = st.columns(5)
-    for idx, col in enumerate(cols):
-        if i + idx < len(roommates):
-            rm = roommates[i + idx]
+    for j, col in enumerate(cols):
+        if i + j < len(roommate_data):
+            r = roommate_data[i + j]
             with col:
-                st.image(rm["img"], width=100)
-                st.markdown(f"**{rm['name']}**")
-                st.caption(f"{rm['bio']}")
-                st.markdown(f"💸 {rm['price']}  \n📍 {rm['location']}")
-                st.button("View Profile", key=f"profile_{i+idx}")
+                st.markdown(f"**{r['name']}**")
+                st.caption(r["bio"])
+                st.markdown(f"💸 {r['price']}  \n📍 {r['location']}")
+                st.button("View Profile", key=f"profile_{i+j}")
 
 st.markdown("---")
 st.markdown("## 📍 Platform Overview")
