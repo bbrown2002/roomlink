@@ -1,50 +1,69 @@
-import random
 import streamlit as st
 
 st.markdown("## 🧑‍🤝‍🧑 Available Roommates")
 
 # ====== FILTERS ======
-selected_location = st.selectbox("📍 Filter by Location", ["Any"] + ["Downtown", "Northside", "Rams Commons", "Near WSSU Library", "Midtown", "East Winston", "Salem Lake", "West End"])
-selected_vibe = st.selectbox("🧠 Filter by Vibe", ["Any"] + ["Quiet", "Clean freak", "Chill", "Sociable", "Early sleeper", "Night owl", "Smoker", "Pet friendly", "Gamer", "Gym rat"])
+selected_location = st.selectbox("📍 Filter by Location", ["Any", "Downtown", "Northside", "Rams Commons", "Near WSSU Library", "Midtown", "East Winston", "Salem Lake", "West End"])
+selected_vibe = st.selectbox("🧠 Filter by Vibe", ["Any", "Quiet", "Clean freak", "Chill", "Sociable", "Early sleeper", "Night owl", "Smoker", "Pet friendly", "Gamer", "Gym rat"])
+selected_gender = st.selectbox("⚧️ Filter by Gender", ["Any", "Male", "Female"])
 
 # ====== TRAITS ======
 vibe_traits = ["Quiet", "Clean freak", "Chill", "Sociable", "Early sleeper", "Night owl", "Smoker", "Pet friendly", "Gamer", "Gym rat"]
 locations = ["Downtown", "Northside", "Rams Commons", "Near WSSU Library", "Midtown", "East Winston", "Salem Lake", "West End"]
 majors = ["Pre-nursing", "Engineering", "Creative Writing", "Sociology", "Biology", "Pre-Med", "Psychology", "Business", "Art", "Music"]
 
+male_names = [
+    "Jaylen", "Elijah", "Zion", "Kai", "Malik", "Tre", "Khalil", "Jordan", "Isaiah", "Tyrese",
+    "Miles", "Andre", "Darius", "Xavier", "Quincy", "Eli", "Devin", "Amari", "Cameron", "Noah",
+    "Logan", "Micah", "Trey", "Omar", "Nasir"
+]
+
+female_names = [
+    "Ava", "Maya", "Naomi", "Jasmine", "Nia", "Deja", "Sarai", "Skye", "Imani", "Riley",
+    "Tiana", "Zoe", "Layla", "Autumn", "Brielle", "Camille", "Faith", "Gianna", "Haven", "India",
+    "Jada", "Kori", "Lena", "Melody", "Nova"
+]
+
 # ====== BUILD STATIC LIST ======
 roommate_data = []
 
 for i in range(25):
+    vibes = [vibe_traits[i % len(vibe_traits)], vibe_traits[(i + 4) % len(vibe_traits)]]
     roommate_data.append({
-        "name": f"Male Student {i+1}, {random.randint(19, 25)}",
-        "bio": f"{random.choice(majors)} major. {random.choice(vibe_traits)}. {random.choice(vibe_traits)}.",
-        "price": f"${random.randint(500, 750)}/mo",
-        "location": random.choice(locations),
-        "vibes": random.sample(vibe_traits, 2)
+        "name": f"{male_names[i]}, {19 + i % 6}",
+        "gender": "Male",
+        "bio": f"{majors[i % len(majors)]} major. {vibes[0]}. {vibes[1]}.",
+        "price": f"${550 + (i % 6) * 25}/mo",
+        "location": locations[i % len(locations)],
+        "vibes": vibes
     })
 
 for i in range(25):
+    vibes = [vibe_traits[(i + 1) % len(vibe_traits)], vibe_traits[(i + 5) % len(vibe_traits)]]
     roommate_data.append({
-        "name": f"Female Student {i+1}, {random.randint(19, 25)}",
-        "bio": f"{random.choice(majors)} major. {random.choice(vibe_traits)}. {random.choice(vibe_traits)}.",
-        "price": f"${random.randint(500, 750)}/mo",
-        "location": random.choice(locations),
-        "vibes": random.sample(vibe_traits, 2)
+        "name": f"{female_names[i]}, {19 + i % 6}",
+        "gender": "Female",
+        "bio": f"{majors[(i + 3) % len(majors)]} major. {vibes[0]}. {vibes[1]}.",
+        "price": f"${575 + (i % 6) * 20}/mo",
+        "location": locations[(i + 2) % len(locations)],
+        "vibes": vibes
     })
 
 # ====== FILTER RESULTS ======
+filtered = roommate_data
 if selected_location != "Any":
-    roommate_data = [r for r in roommate_data if r["location"] == selected_location]
+    filtered = [r for r in filtered if r["location"] == selected_location]
 if selected_vibe != "Any":
-    roommate_data = [r for r in roommate_data if selected_vibe in r["vibes"]]
+    filtered = [r for r in filtered if selected_vibe in r["vibes"]]
+if selected_gender != "Any":
+    filtered = [r for r in filtered if r["gender"] == selected_gender]
 
-# ====== DISPLAY CARDS ======
-for i in range(0, len(roommate_data), 5):
+# ====== DISPLAY PROFILES ======
+for i in range(0, len(filtered), 5):
     cols = st.columns(5)
     for j, col in enumerate(cols):
-        if i + j < len(roommate_data):
-            r = roommate_data[i + j]
+        if i + j < len(filtered):
+            r = filtered[i + j]
             with col:
                 st.markdown(f"**{r['name']}**")
                 st.caption(r["bio"])
