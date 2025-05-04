@@ -3,13 +3,13 @@ import streamlit as st
 st.markdown("## 🧑‍🤝‍🧑 Available Roommates")
 
 # ====== FILTERS ======
-selected_location = st.selectbox("📍 Filter by Location", ["Any", "Downtown", "Northside", "Rams Commons", "Near WSSU Library", "Midtown", "East Winston", "Salem Lake", "West End"])
+selected_location = st.selectbox("📍 Filter by Location", ["Any", "Downtown", "Ardmore", "West End", "Old Salem", "Peters Creek", "Cloverdale", "Washington Park", "University Parkway", "Reynolda Village"])
 selected_vibe = st.selectbox("🧠 Filter by Vibe", ["Any", "Quiet", "Clean freak", "Chill", "Sociable", "Early sleeper", "Night owl", "Smoker", "Pet friendly", "Gamer", "Gym rat"])
 selected_gender = st.selectbox("⚧️ Filter by Gender", ["Any", "Male", "Female"])
 
 # ====== TRAITS ======
 vibe_traits = ["Quiet", "Clean freak", "Chill", "Sociable", "Early sleeper", "Night owl", "Smoker", "Pet friendly", "Gamer", "Gym rat"]
-locations = ["Downtown", "Northside", "Rams Commons", "Near WSSU Library", "Midtown", "East Winston", "Salem Lake", "West End"]
+locations = ["Downtown", "Ardmore", "West End", "Old Salem", "Peters Creek", "Cloverdale", "Washington Park", "University Parkway", "Reynolda Village"]
 majors = ["Pre-nursing", "Engineering", "Creative Writing", "Sociology", "Biology", "Pre-Med", "Psychology", "Business", "Art", "Music"]
 
 male_names = [
