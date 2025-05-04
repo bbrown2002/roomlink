@@ -1,7 +1,7 @@
 import streamlit as st
 import random
 
-st.markdown("## 🧑‍🤝‍🧑 Available Roommates (Refreshed)")
+st.markdown("## 🧑‍🤝‍🧑 Available Roommates")
 
 # Sample data to randomize
 first_names = ["Ava", "Jaylen", "Maya", "Elijah", "Naomi", "Zion", "Jasmine", "Kai", "Nia", "Malik", "Deja", "Tre", "Sarai", "Khalil", "Skye"]
