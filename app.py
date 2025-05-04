@@ -104,4 +104,4 @@ Want features like messaging, school email sign-in, and verified reviews? That�
 st.markdown("---")
 
 # --- Footer ---
-st.caption("RoomLink © 2025 — Developed by Braxton Brown | Inspired by Roomi, focused on students")
+st.caption("RoomLink © 2025 — Developed by Braxton Brown & Ridgill Jenkins")
