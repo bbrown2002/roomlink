@@ -13,54 +13,64 @@ st.set_page_config(
 # Optional: add your logo here
 # st.image("assets/roomlink_logo.png", width=150)
 
+# ========== MAIN TITLE ==========
 st.title("🏠 RoomLink")
-st.markdown("### Your One-Stop Platform for Off-Campus Housing and Roommate Matching")
+st.markdown("## Find housing. Find roommates. Live better.")
 
 # ========== INTRO PARAGRAPH ==========
 st.markdown("""
-Welcome to **RoomLink**, a platform built specifically for students navigating the chaos of off-campus living.  
-Whether you're looking for a new place to stay or trying to avoid living with someone who leaves dishes in the sink for two weeks, we’ve got you covered.
+RoomLink is built for students who need off-campus housing and real roommate compatibility.  
+Use the sidebar to get started:
 
-RoomLink helps you:
-- 🔍 **Browse verified housing listings** near campus
-- 🤝 **Match with compatible roommates** based on your lifestyle
-- 🧠 **Make smarter decisions** with clear, structured info
-- 🔒 **Stay safe** with optional ID verification and profile filters
+- Submit a Roommate Match Form  
+- Browse available Housing Listings
 """)
 
-# ========== FEATURES SECTION ==========
+# ========== DETAILED SECTION ==========
+st.markdown("---")
+st.markdown("## 🔍 What Is RoomLink?")
+
+st.markdown("""
+RoomLink is a web-based housing and roommate connection system designed to simplify the student living experience. Whether you're new to campus, relocating, or just tired of getting ghosted on Facebook housing groups, RoomLink gives you the tools to:
+- 📬 List or find off-campus housing
+- 🤝 Match with roommates based on lifestyle compatibility
+- 🧠 Make better living decisions with verified info and community filters
+""")
+
+# ========== FEATURES ==========
+st.markdown("---")
 st.markdown("## 🌟 Key Features")
 
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader("🔑 Roommate Matching")
+    st.subheader("🧑‍🤝‍🧑 Roommate Matching")
     st.markdown("""
-    - Personalized form collects lifestyle preferences
-    - Filters by sleep schedule, cleanliness, social habits, and more
-    - Avoid conflict by matching with people who actually vibe with you
+    • Match with students based on sleep schedule, social habits, and more  
+    • Clean, easy-to-use form to submit your living preferences  
+    • System designed to reduce lifestyle clashes  
     """)
 
-    st.subheader("📬 Room Listing Submission")
+    st.subheader("📄 Room Listings")
     st.markdown("""
-    - List available rooms or apartments
-    - Upload price, location, lease length, pet policy, and more
-    - Easy entry for students or local landlords
+    • Browse available off-campus housing options near your school  
+    • Filter by rent, distance, pet policy, lease length, and more  
+    • Organized display of listing info and contact details  
     """)
 
 with col2:
-    st.subheader("📄 Listings Page")
+    st.subheader("📬 Room Submission")
     st.markdown("""
-    - See all active housing options with filters
-    - View key info like rent, distance, rules, and contact email
-    - Organized in a clean, scrollable table
+    • Submit available housing to help other students  
+    • Input price, location, lease terms, and upload image links  
+    • Listings added directly to the platform’s housing page  
     """)
 
-    st.subheader("🛡 Safety & Trust")
+    st.subheader("🔒 Safety & Trust")
     st.markdown("""
-    - School email optional for verification
-    - Profiles visible only after form submission
-    - Future versions will include messaging and profile rating system
+    • School email verification (future feature)  
+    • Private profiles until match confirmed  
+    • Reduced risk through transparency and student-only visibility  
     """)
 
 # ========== CALL TO ACTION ==========
@@ -68,18 +78,15 @@ st.markdown("---")
 st.markdown("## 🚀 Ready to Get Started?")
 
 st.markdown("""
-Use the **navigation sidebar** to:
-- Submit your roommate preferences
-- Explore available listings
-- Or list your own space
+Use the navigation sidebar to:
+- 📝 Submit your **Roommate Match Form**  
+- 🏘 Browse available **Housing Listings**  
+- 📤 List your own housing opportunity  
 
-RoomLink was built with one goal in mind: **make student housing suck less**.
+RoomLink was created to give students power, safety, and clarity when choosing who they live with and where they live.
 """)
 
-st.info("🔧 This platform is still under development. All data shown is for demonstration purposes only.")
-
-# ========== OPTIONAL FOOTER ==========
+# ========== FOOTER ==========
 st.markdown("---")
-st.caption("Developed by Braxton Brown | WSSU | 2025")
-st.caption("GitHub: [@bbrown2002](https://github.com/bbrown2002) • Powered by Streamlit")
-
+st.caption("Developed by Braxton Brown • Winston-Salem State University • 2025")
+st.caption("GitHub: [@bbrown2002](https://github.com/bbrown2002) • Built with ❤️ using Streamlit")
