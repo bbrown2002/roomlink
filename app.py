@@ -1,4 +1,6 @@
 import streamlit as st
+from faker import Faker
+import random
 from PIL import Image
 
 # --- Page Configuration ---
@@ -264,16 +266,19 @@ if "user_preferences" in st.session_state:
         return random.choice(variations.get(category, {}).get(preference, [preference]))
 
     def generate_matches(prefs):
-        matches = []
-        for i in range(5):
+    listing = st.session_state.get("current_listing", {})
+    base_budget = int(listing.get("price", "$1000").replace("$", ""))
+    base_location = listing.get("location", "Downtown")
+
+    matches = []
+    for i in range(5):
+
             match = {
                 "age": random.randint(18, 25),
                 "gender": generate_variation(prefs["gender"], "gender"),
-                "budget": random.randint(prefs["budget"] - 100, prefs["budget"] + 100),
-                "location": random.choice([
-                    prefs["location_pref"],
-                    "Downtown", "West End", "Old Salem", "Ardmore", "Cloverdale"
-                ]),
+               "budget": random.randint(base_budget - 100, base_budget + 100),
+"location": base_location,
+
                 "cleanliness": generate_variation(prefs["cleanliness"], "cleanliness"),
                 "sleep_schedule": generate_variation(prefs["sleep_schedule"], "sleep_schedule"),
                 "social_level": generate_variation(prefs["social_level"], "social_level"),
@@ -291,7 +296,19 @@ if "user_preferences" in st.session_state:
     matches = generate_matches(prefs)
 
     for idx, m in enumerate(matches):
-        st.markdown(f"### 🧑 Match #{idx+1}")
+        def random_name(gender):
+    if gender == "Man":
+        return fake.name_male()
+    elif gender == "Woman":
+        return fake.name_female()
+    else:
+        return fake.name()
+
+name = random_name(m['gender'])
+first, last = name.split(" ")[0], name.split(" ")[-1]
+username = f"{first[0].lower()}{last.lower()}{random.randint(10, 99)}"
+
+        st.markdown(f"### 🧑 Match #{idx+1} — **{name}**")
         st.markdown(f"""
         - **Age**: {m['age']}
         - **Gender**: {m['gender']}
@@ -310,7 +327,7 @@ if "user_preferences" in st.session_state:
         """)
 
         with st.expander("💬 Contact Preview"):
-            st.write(f"**Username:** match_user_{idx+1}")
+            st.write(f"**Username:** {username}")
             st.write("**Status:** Online now ✅")
             st.text_area("Send a message...", placeholder=f"Hey! I'm also looking to live around {m['location']} — want to connect?", key=f"msg_text_{idx}")
             st.button("📨 Send Message", key=f"msg_btn_{idx}")
