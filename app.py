@@ -174,13 +174,8 @@ with col1:
     gender = st.selectbox("Your Gender", ["Woman", "Man", "Non-binary", "Prefer not to say"])
     school_email = st.text_input("School Email (.edu)")
     major = st.text_input("Your Major")
-    budget = st.number_input("Max Rent Willing to Pay ($)", min_value=300, max_value=1500, step=25)
 
 with col2:
-    location_pref = st.selectbox("Preferred Neighborhood", [
-        "Ardmore", "Downtown", "West End", "Old Salem", "Peters Creek",
-        "Cloverdale", "Washington Park", "Reynolda Village", "University Parkway"
-    ])
     cleanliness = st.selectbox("Cleanliness Level", ["Messy", "Average", "Very Clean"])
     sleep_schedule = st.selectbox("Sleep Schedule", ["Early Riser", "Night Owl", "Flexible"])
     social_level = st.selectbox("Social Comfort", ["Introverted", "Moderate", "Extroverted"])
@@ -209,8 +204,6 @@ st.session_state["user_preferences"] = {
     "gender": gender,
     "school_email": school_email,
     "major": major,
-    "budget": budget,
-    "location_pref": location_pref,
     "cleanliness": cleanliness,
     "sleep_schedule": sleep_schedule,
     "social_level": social_level,
