@@ -73,14 +73,17 @@ if submitted:
     csv_path = "housing_listings.csv"
     df = pd.DataFrame([listing])
 
-    if os.path.exists(csv_path):
-        df.to_csv(csv_path, mode="a", header=False, index=False)
-    else:
-        df.to_csv(csv_path, index=False)
+    try:
+        if os.path.exists(csv_path):
+            df.to_csv(csv_path, mode="a", header=False, index=False)
+        else:
+            df.to_csv(csv_path, index=False)
+    except Exception as e:
+        st.error(f"Failed to save listing: {e}")
+        st.stop()
 
-    # Confirm
-    st.success("✅ Listing submitted! Your room will appear on the Housing Listings page after refresh.")
-    st.markdown("---")
-    st.subheader("📄 Summary of Your Listing:")
-    for k, v in listing.items():
-        st.markdown(f"- **{k.capitalize()}**: {v}")
+    # Mark form as complete and redirect
+    st.session_state["room_form_completed"] = True
+    st.success("✅ Listing submitted! Redirecting you to the Roommate Form...")
+    st.rerun()  # Ensure session is saved before switching
+    st.switch_page("pages/roommate_form.py")
