@@ -10,6 +10,9 @@ st.markdown("---")
 # Define path to CSV
 csv_path = "data/housing_listings.csv"
 
+# Ensure 'data/' folder exists
+os.makedirs("data", exist_ok=True)
+
 # If CSV doesn't exist, create it with headers
 if not os.path.exists(csv_path):
     df_empty = pd.DataFrame(columns=["price", "location", "lease", "rules", "desc"])
