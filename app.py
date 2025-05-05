@@ -274,26 +274,26 @@ def generate_matches(prefs):
 
     matches = []
     for i in range(5):
+        match = {
+            "age": random.randint(18, 25),
+            "gender": generate_variation(prefs["gender"], "gender"),
+            "budget": random.randint(base_budget - 100, base_budget + 100),
+            "location": base_location,
+            "cleanliness": generate_variation(prefs["cleanliness"], "cleanliness"),
+            "sleep_schedule": generate_variation(prefs["sleep_schedule"], "sleep_schedule"),
+            "social_level": generate_variation(prefs["social_level"], "social_level"),
+            "noise_tolerance": generate_variation(prefs["noise_tolerance"], "noise_tolerance"),
+            "study_habits": prefs["study_habits"],
+            "smoking_ok": prefs["smoking_ok"],
+            "pets_ok": prefs["pets_ok"],
+            "guests_ok": prefs["guests_ok"],
+            "shared_items": prefs["shared_items"],
+            "hobbies": prefs["hobbies"] or "Not specified",
+        }
+        matches.append(match)
 
-            match = {
-                "age": random.randint(18, 25),
-                "gender": generate_variation(prefs["gender"], "gender"),
-               "budget": random.randint(base_budget - 100, base_budget + 100),
-"location": base_location,
+    return matches  # ← make sure this is aligned with `matches = []` above
 
-                "cleanliness": generate_variation(prefs["cleanliness"], "cleanliness"),
-                "sleep_schedule": generate_variation(prefs["sleep_schedule"], "sleep_schedule"),
-                "social_level": generate_variation(prefs["social_level"], "social_level"),
-                "noise_tolerance": generate_variation(prefs["noise_tolerance"], "noise_tolerance"),
-                "study_habits": prefs["study_habits"],
-                "smoking_ok": prefs["smoking_ok"],
-                "pets_ok": prefs["pets_ok"],
-                "guests_ok": prefs["guests_ok"],
-                "shared_items": prefs["shared_items"],
-                "hobbies": prefs["hobbies"] or "Not specified",
-            }
-            matches.append(match)
-        return matches
 
     matches = generate_matches(prefs)
 
