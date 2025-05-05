@@ -1,9 +1,8 @@
 import streamlit as st
 from faker import Faker
+fake = Faker()
 import random
 from PIL import Image
-
-fake = Faker()
 
 # --- Page Configuration ---
 st.set_page_config(
