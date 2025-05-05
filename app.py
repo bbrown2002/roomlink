@@ -1,149 +1,146 @@
 import streamlit as st
 import pandas as pd
-import os
 import random
+import os
 
 # --- Page Config ---
-st.set_page_config(page_title="RoomLink | All-In-One", layout="wide", initial_sidebar_state="expanded")
-
-# --- Custom CSS ---
-st.markdown("""
-    <style>
-    .roomlink-header {
-        font-size: 42px;
-        font-weight: 800;
-        color: #B31B1B;
-        letter-spacing: -1px;
-        margin-bottom: 0;
-    }
-    .roomlink-sub {
-        font-size: 20px;
-        color: #444;
-        margin-top: 0;
-    }
-    </style>
-""", unsafe_allow_html=True)
+st.set_page_config(page_title="RoomLink | All-in-One", layout="wide")
 
 # --- Header ---
-st.markdown('<p class="roomlink-header">RoomLink</p>', unsafe_allow_html=True)
-st.markdown('<p class="roomlink-sub">All-in-One: Submit, Match, and View</p>', unsafe_allow_html=True)
+st.title("🏠 RoomLink | Student Housing & Roommate Finder")
+st.markdown("Safe, smart, and social housing for Winston-Salem students.")
 st.markdown("---")
 
-# --- Room Form ---
+# --- Step 1: Housing Form ---
 st.subheader("📬 Submit a Room or Property")
+
 with st.form("room_form"):
     col1, col2 = st.columns(2)
     with col1:
-        location = st.selectbox("Neighborhood or Area", [
-            "Ardmore", "Cloverdale", "West End", "Downtown", "Old Salem",
-            "Reynolda Village", "Washington Park", "University Parkway"
-        ])
-        price = st.number_input("Monthly Rent ($)", min_value=300, max_value=2000, step=25)
+        location = st.selectbox("Neighborhood", ["Ardmore", "Cloverdale", "West End", "Downtown", "Old Salem", "Reynolda Village", "Washington Park", "University Parkway"])
+        price = st.number_input("Monthly Rent ($)", 300, 2000, step=25)
         lease_type = st.selectbox("Lease Type", ["Month-to-month", "6 months", "9 months", "12 months", "Flexible"])
     with col2:
-        pets_allowed = st.radio("Pets Allowed?", ["Yes", "No"])
-        smoking_policy = st.radio("Smoking Allowed?", ["Yes", "No"])
-        guest_policy = st.radio("Guests Allowed?", ["Yes", "No"])
-        utilities_included = st.radio("Utilities Included?", ["Yes", "No"])
-    description = st.text_area("Write a short description about the room", height=150)
-    room_submitted = st.form_submit_button("Submit Room Listing")
+        pets = st.radio("Pets Allowed?", ["Yes", "No"])
+        smoke = st.radio("Smoking Allowed?", ["Yes", "No"])
+        guests = st.radio("Guests Allowed?", ["Yes", "No"])
+        utilities = st.radio("Utilities Included?", ["Yes", "No"])
+    desc = st.text_area("Room Description", height=150)
+    submit_room = st.form_submit_button("Save Room Info")
 
-# --- Save Room Listing to Session State ---
-if room_submitted:
+if submit_room:
     rules = []
-    if pets_allowed == "No": rules.append("No pets")
+    if pets == "No": rules.append("No pets")
     else: rules.append("Pets allowed")
-    if smoking_policy == "No": rules.append("No smoking")
+    if smoke == "No": rules.append("No smoking")
     else: rules.append("Smoking allowed")
-    if guest_policy == "No": rules.append("No guests")
+    if guests == "No": rules.append("No guests")
     else: rules.append("Guest friendly")
-    if utilities_included == "Yes": rules.append("Utilities included")
-    rules_str = ", ".join(rules)
+    if utilities == "Yes": rules.append("Utilities included")
 
     st.session_state["room_data"] = {
         "price": f"${int(price)}",
         "location": location,
         "lease": lease_type,
-        "rules": rules_str,
-        "desc": description or "No description provided."
+        "rules": ", ".join(rules),
+        "desc": desc or "No description"
     }
-    st.success("✅ Room listing saved! You can now fill out roommate match preferences.")
+    st.success("Room saved!")
 
-# --- Roommate Match Form ---
-st.subheader("📝 Roommate Match Form")
+# --- Step 2: Roommate Preferences Form ---
 if "room_data" in st.session_state:
-    with st.form("match_form"):
+    st.markdown("---")
+    st.subheader("📝 Roommate Match Form")
+
+    with st.form("roommate_form"):
         col1, col2 = st.columns(2)
         with col1:
-            full_name = st.text_input("Full Name")
-            age = st.slider("Your Age", 18, 30, 20)
-            gender = st.selectbox("Your Gender", ["Woman", "Man", "Non-binary", "Prefer not to say"])
-            budget = st.number_input("Max Rent Willing to Pay ($)", min_value=300, max_value=1500, step=25)
+            name = st.text_input("Full Name")
+            age = st.slider("Age", 18, 30)
+            gender = st.selectbox("Gender", ["Woman", "Man", "Non-binary", "Prefer not to say"])
+            email = st.text_input("School Email")
+            major = st.text_input("Major")
+            budget = st.number_input("Max Rent Willing to Pay", 300, 1500, step=25)
         with col2:
-            location_pref = st.selectbox("Preferred Neighborhood", [
-                "Ardmore", "Downtown", "West End", "Old Salem", "Peters Creek",
-                "Cloverdale", "Washington Park", "Reynolda Village", "University Parkway"
-            ])
-            cleanliness = st.selectbox("Cleanliness Level", ["Messy", "Average", "Very Clean"])
-            sleep_schedule = st.selectbox("Sleep Schedule", ["Early Riser", "Night Owl", "Flexible"])
-        social_level = st.selectbox("Social Comfort", ["Introverted", "Moderate", "Extroverted"])
-        noise_tolerance = st.selectbox("Noise Tolerance", ["Low", "Medium", "High"])
-        smoking_ok = st.radio("Okay with Smoking?", ["Yes", "No"])
-        pets_ok = st.radio("Okay with Pets?", ["Yes", "No"])
-        guests_ok = st.radio("Guest Policy?", ["Never", "Sometimes", "Often"])
-        shared_items = st.radio("Willing to Share Items?", ["Yes", "Some", "No"])
-        hobbies = st.text_input("Hobbies", placeholder="e.g., Gym, Gaming")
-        match_submit = st.form_submit_button("See Matches")
+            location_pref = st.selectbox("Preferred Neighborhood", ["Ardmore", "Downtown", "West End", "Old Salem", "Peters Creek", "Cloverdale", "Washington Park", "Reynolda Village", "University Parkway"])
+            clean = st.selectbox("Cleanliness Level", ["Messy", "Average", "Very Clean"])
+            sleep = st.selectbox("Sleep Schedule", ["Early Riser", "Night Owl", "Flexible"])
+            social = st.selectbox("Social Comfort", ["Introverted", "Moderate", "Extroverted"])
+            noise = st.selectbox("Noise Tolerance", ["Low", "Medium", "High"])
+            study = st.selectbox("Study Habits", ["Quiet room", "Library", "With music", "Late-night"])
+        lifestyle1, lifestyle2 = st.columns(2)
+        with lifestyle1:
+            smoking_ok = st.radio("OK with Smoking Roommates?", ["Yes", "No"])
+            pets_ok = st.radio("OK with Pets?", ["Yes", "No"])
+        with lifestyle2:
+            guests_ok = st.radio("OK with Guests?", ["Never", "Sometimes", "Often"])
+            shared_items = st.radio("Share Items (kitchen, etc)?", ["Yes", "Some", "No"])
+        hobbies = st.text_input("Hobbies", placeholder="Gaming, Gym, Reading")
+        bio = st.text_area("Your Bio")
 
-    # --- Display Matches ---
-    if match_submit:
-        def generate_variation(preference, category):
-            variations = {
-                "cleanliness": {"Messy": ["Average", "Messy"], "Average": ["Very Clean", "Average"], "Very Clean": ["Very Clean", "Average"]},
-                "sleep_schedule": {"Early Riser": ["Early Riser", "Flexible"], "Night Owl": ["Night Owl", "Flexible"], "Flexible": ["Flexible", "Early Riser", "Night Owl"]},
-                "social_level": {"Introverted": ["Introverted", "Moderate"], "Moderate": ["Introverted", "Extroverted", "Moderate"], "Extroverted": ["Extroverted", "Moderate"]},
-                "noise_tolerance": {"Low": ["Low", "Medium"], "Medium": ["Low", "High"], "High": ["Medium", "High"]},
-                "gender": {"Man": ["Man"], "Woman": ["Woman"], "Non-binary": ["Non-binary", "Woman", "Man"], "Prefer not to say": ["Man", "Woman", "Non-binary"]}
-            }
-            return random.choice(variations.get(category, {}).get(preference, [preference]))
+        submit_roommate = st.form_submit_button("Find Matches")
 
-        prefs = {
-            "full_name": full_name, "age": age, "gender": gender, "budget": budget, "location_pref": location_pref,
-            "cleanliness": cleanliness, "sleep_schedule": sleep_schedule, "social_level": social_level,
-            "noise_tolerance": noise_tolerance, "smoking_ok": smoking_ok, "pets_ok": pets_ok,
-            "guests_ok": guests_ok, "shared_items": shared_items, "hobbies": hobbies or "Not specified"
+    if submit_roommate:
+        st.session_state["roommate_prefs"] = {
+            "full_name": name, "age": age, "gender": gender, "school_email": email,
+            "major": major, "budget": budget, "location_pref": location_pref,
+            "cleanliness": clean, "sleep_schedule": sleep, "social_level": social,
+            "noise_tolerance": noise, "study_habits": study, "smoking_ok": smoking_ok,
+            "pets_ok": pets_ok, "guests_ok": guests_ok, "shared_items": shared_items,
+            "hobbies": hobbies, "bio": bio
+        }
+        st.success("Preferences submitted!")
+
+# --- Step 3: Show Match Results ---
+if "roommate_prefs" in st.session_state:
+    st.markdown("---")
+    st.subheader("🎯 Your Roommate Matches")
+
+    prefs = st.session_state["roommate_prefs"]
+
+    def variation(preference, category):
+        options = {
+            "cleanliness": {"Messy": ["Average", "Messy"], "Average": ["Very Clean", "Average"], "Very Clean": ["Very Clean", "Average"]},
+            "sleep_schedule": {"Early Riser": ["Early Riser", "Flexible"], "Night Owl": ["Night Owl", "Flexible"], "Flexible": ["Flexible", "Early Riser", "Night Owl"]},
+            "social_level": {"Introverted": ["Introverted", "Moderate"], "Moderate": ["Introverted", "Extroverted", "Moderate"], "Extroverted": ["Extroverted", "Moderate"]},
+            "noise_tolerance": {"Low": ["Low", "Medium"], "Medium": ["Low", "High"], "High": ["Medium", "High"]},
+            "gender": {"Man": ["Man"], "Woman": ["Woman"], "Non-binary": ["Non-binary", "Woman", "Man"], "Prefer not to say": ["Man", "Woman", "Non-binary"]}
+        }
+        return random.choice(options.get(category, {}).get(preference, [preference]))
+
+    for i in range(5):
+        match = {
+            "age": random.randint(18, 25),
+            "gender": variation(prefs["gender"], "gender"),
+            "budget": random.randint(prefs["budget"] - 100, prefs["budget"] + 100),
+            "location": random.choice([prefs["location_pref"], "Downtown", "West End", "Old Salem", "Ardmore", "Cloverdale"]),
+            "cleanliness": variation(prefs["cleanliness"], "cleanliness"),
+            "sleep_schedule": variation(prefs["sleep_schedule"], "sleep_schedule"),
+            "social_level": variation(prefs["social_level"], "social_level"),
+            "noise_tolerance": variation(prefs["noise_tolerance"], "noise_tolerance"),
+            "study_habits": prefs["study_habits"],
+            "smoking_ok": prefs["smoking_ok"],
+            "pets_ok": prefs["pets_ok"],
+            "guests_ok": prefs["guests_ok"],
+            "shared_items": prefs["shared_items"],
+            "hobbies": prefs["hobbies"]
         }
 
-        st.subheader("🎯 Your Roommate Matches")
-        for idx in range(3):
-            m = {
-                "age": random.randint(18, 25),
-                "gender": generate_variation(prefs["gender"], "gender"),
-                "budget": random.randint(prefs["budget"] - 100, prefs["budget"] + 100),
-                "location": random.choice([prefs["location_pref"], "Downtown", "West End", "Old Salem", "Ardmore", "Cloverdale"]),
-                "cleanliness": generate_variation(prefs["cleanliness"], "cleanliness"),
-                "sleep_schedule": generate_variation(prefs["sleep_schedule"], "sleep_schedule"),
-                "social_level": generate_variation(prefs["social_level"], "social_level"),
-                "noise_tolerance": generate_variation(prefs["noise_tolerance"], "noise_tolerance"),
-                "study_habits": "Quiet room", "smoking_ok": prefs["smoking_ok"], "pets_ok": prefs["pets_ok"],
-                "guests_ok": prefs["guests_ok"], "shared_items": prefs["shared_items"], "hobbies": prefs["hobbies"]
-            }
-            st.markdown(f"### 🧑 Match #{idx+1}")
-            st.markdown(f"""
-            - **Age**: {m['age']}
-            - **Gender**: {m['gender']}
-            - **Budget**: ${m['budget']}/mo
-            - **Location**: {m['location']}
-            - **Cleanliness**: {m['cleanliness']}
-            - **Sleep Schedule**: {m['sleep_schedule']}
-            - **Social Level**: {m['social_level']}
-            - **Noise Tolerance**: {m['noise_tolerance']}
-            - **Smoking OK**: {m['smoking_ok']}
-            - **Pets OK**: {m['pets_ok']}
-            - **Guests OK**: {m['guests_ok']}
-            - **Shared Items**: {m['shared_items']}
-            - **Interests**: {m['hobbies']}
-            """)
-            st.markdown("---")
-else:
-    st.info("⚠️ Please submit your room listing above to unlock the match form.")
+        st.markdown(f"### 👤 Match #{i+1}")
+        st.markdown(f"""
+        - **Age**: {match['age']}
+        - **Gender**: {match['gender']}
+        - **Budget Range**: ~${match['budget']}
+        - **Location**: {match['location']}
+        - **Cleanliness**: {match['cleanliness']}
+        - **Sleep Schedule**: {match['sleep_schedule']}
+        - **Social**: {match['social_level']}
+        - **Noise Tolerance**: {match['noise_tolerance']}
+        - **Study Habits**: {match['study_habits']}
+        - **Smoking OK**: {match['smoking_ok']}
+        - **Pets OK**: {match['pets_ok']}
+        - **Guests OK**: {match['guests_ok']}
+        - **Shares Items?**: {match['shared_items']}
+        - **Hobbies**: {match['hobbies']}
+        """)
+        st.markdown("---")
