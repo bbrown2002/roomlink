@@ -8,7 +8,7 @@ st.markdown("Explore current off-campus housing options submitted by students an
 st.markdown("---")
 
 # Define path to CSV
-csv_path = "data/housing_listings.csv"
+csv_path = "housing_listings.csv"  # no folder, file is in the root directory
 
 # Ensure 'data/' folder exists
 os.makedirs("data", exist_ok=True)
