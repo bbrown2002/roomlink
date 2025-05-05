@@ -82,7 +82,7 @@ if submitted:
         st.error(f"Failed to save listing: {e}")
         st.stop()
 
-        # Mark form as complete
+    # Mark form as complete
     st.session_state["room_form_completed"] = True
     st.success("✅ Listing submitted! Redirecting you to the Roommate Form...")
 
