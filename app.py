@@ -36,8 +36,6 @@ st.markdown("""
 with st.sidebar:
     st.markdown("## 📂 Navigation")
     st.page_link("app.py", label="🏠 Home", icon="🏠")
-    st.page_link("pages/roommate_form.py", label="📝 Roommate Match Form", icon="🧑‍🤝‍🧑")
-    st.page_link("pages/match_results.py", label="🎯 Roommate Matches", icon="🎯")
     st.page_link("pages/room_form.py", label="📬 Submit a Room Listing", icon="📦")
     st.page_link("pages/housing_listings.py", label="🏡 View Housing Listings", icon="📍")
 
@@ -58,17 +56,17 @@ with col1:
     🛏️ Filtered by lifestyle and rent preferences  
     💬 Easy access to listings and profiles
     """)
-    
+
     st.markdown("### 🚀 Get Started:")
-    if st.button("🧑‍🤝‍🧑  Find a Roommate"):
-        st.switch_page("pages/roommate_directory.py")
     if st.button("🏡  Find Housing"):
         st.switch_page("pages/housing_listings.py")
-    if st.button("📝  Submit Your Info"):
-        st.switch_page("pages/roommate_form.py")
 
 with col2:
-    st.image("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=870&q=80", caption="Off-campus living, simplified", use_column_width=True)
+    st.image(
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=870&q=80",
+        caption="Off-campus living, simplified",
+        use_column_width=True
+    )
 
 st.markdown("---")
 
@@ -89,8 +87,8 @@ RoomLink connects students with local off-campus housing and roommate opportunit
 2. **Housing Listings**  
    Scroll listings from students and landlords in popular student neighborhoods. Filter by rent, lease terms, and rules like pets or smoking.
 
-3. **Submit Your Info**  
-   Post yourself as a roommate or list an available room using clean, straightforward forms. All data stays local and secure.
+3. **Submit a Room**  
+   List an available space with clean, simple forms. All data stays local and secure.
 
 Together, these tools create a trusted network for college housing in Winston-Salem.
 """)
@@ -99,10 +97,8 @@ Together, these tools create a trusted network for college housing in Winston-Sa
 st.subheader("💬 What Students Are Saying")
 
 col1, col2 = st.columns(2)
-
 with col1:
     st.markdown("> “I found someone who matches my sleep schedule and study habits. I don’t miss random roommates at all.” — *Maya T.*")
-
 with col2:
     st.markdown("> “I posted my extra room and had three people hit me up by the end of the week. Easy and clean.” — *Jaylen B.*")
 
@@ -122,10 +118,10 @@ Future upgrades may include messaging, .edu email sign-ins, and verified reviews
 st.markdown("""
 <div class="section-box">
 <h4 style='margin-bottom:10px;'>Want to get listed?</h4>
-<p>Fill out the roommate or housing form today and join the network. Whether you need a spot or have one to share — RoomLink makes it easy.</p>
+<p>Fill out the housing form today and join the network. Whether you need a spot or have one to share — RoomLink makes it easy.</p>
 </div>
 """, unsafe_allow_html=True)
 
 # --- Footer ---
 st.markdown("---")
-st.caption("RoomLink © 2025 — Developed by Braxton Brown & Ridgill Jenkins  | Winston-Salem State University | Computer Science Project")
+st.caption("RoomLink © 2025 — Developed by Braxton Brown & Ridgill Jenkins | Winston-Salem State University | Computer Science Project")
