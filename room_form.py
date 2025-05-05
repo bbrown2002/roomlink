@@ -40,19 +40,33 @@ with st.form("room_listing_form"):
         st.balloons()
 
         # Save submission (later you can store this in a CSV or database)
-        st.session_state["latest_listing"] = {
-            "lister_name": lister_name,
-            "email": contact_email,
-            "location": location,
-            "price": price,
-            "lease_type": lease_type,
-            "room_type": room_type,
-            "furnished": furnished,
-            "pets_allowed": pets_allowed,
-            "smoking_policy": smoking_policy,
-            "utilities_included": utilities_included,
-            "description": description
-        }
+import pandas as pd
+import os
+
+# Create dictionary from form fields
+listing = {
+    "Lister Name": lister_name,
+    "Email": contact_email,
+    "Location": location,
+    "Rent": price,
+    "Lease Type": lease_type,
+    "Room Type": room_type,
+    "Furnished": furnished,
+    "Pets Allowed": pets_allowed,
+    "Smoking Policy": smoking_policy,
+    "Utilities Included": utilities_included,
+    "Description": description
+}
+
+# Save to CSV
+csv_path = "data/housing_listings.csv"
+df = pd.DataFrame([listing])
+
+if os.path.exists(csv_path):
+    df.to_csv(csv_path, mode="a", index=False, header=False)
+else:
+    df.to_csv(csv_path, index=False)
+
 
         st.markdown("---")
         st.subheader("📄 Summary of Your Listing:")
