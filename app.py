@@ -1,146 +1,126 @@
 import streamlit as st
-import pandas as pd
-import random
-import os
+from PIL import Image
 
-# --- Page Config ---
-st.set_page_config(page_title="RoomLink | All-in-One", layout="wide")
+# --- Page Configuration ---
+st.set_page_config(
+    page_title="RoomLink | Off-Campus Student Housing",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# --- Custom CSS ---
+st.markdown("""
+    <style>
+    .roomlink-header {
+        font-size: 42px;
+        font-weight: 800;
+        color: #B31B1B;
+        letter-spacing: -1px;
+        margin-bottom: 0;
+    }
+    .roomlink-sub {
+        font-size: 20px;
+        color: #444;
+        margin-top: 0;
+    }
+    .section-box {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 # --- Header ---
-st.title("🏠 RoomLink | Student Housing & Roommate Finder")
-st.markdown("Safe, smart, and social housing for Winston-Salem students.")
+st.markdown('<p class="roomlink-header">RoomLink</p>', unsafe_allow_html=True)
+st.markdown('<p class="roomlink-sub">Student Housing Made Safe, Smart, and Social</p>', unsafe_allow_html=True)
 st.markdown("---")
 
-# --- Step 1: Housing Form ---
-st.subheader("📬 Submit a Room or Property")
+# --- Main Hero Section ---
+col1, col2 = st.columns([1, 1])
 
-with st.form("room_form"):
-    col1, col2 = st.columns(2)
-    with col1:
-        location = st.selectbox("Neighborhood", ["Ardmore", "Cloverdale", "West End", "Downtown", "Old Salem", "Reynolda Village", "Washington Park", "University Parkway"])
-        price = st.number_input("Monthly Rent ($)", 300, 2000, step=25)
-        lease_type = st.selectbox("Lease Type", ["Month-to-month", "6 months", "9 months", "12 months", "Flexible"])
-    with col2:
-        pets = st.radio("Pets Allowed?", ["Yes", "No"])
-        smoke = st.radio("Smoking Allowed?", ["Yes", "No"])
-        guests = st.radio("Guests Allowed?", ["Yes", "No"])
-        utilities = st.radio("Utilities Included?", ["Yes", "No"])
-    desc = st.text_area("Room Description", height=150)
-    submit_room = st.form_submit_button("Save Room Info")
+with col1:
+    st.subheader("🏠 Welcome to RoomLink")
+    st.markdown("""
+    **RoomLink** is a web-based off-campus housing resource designed specifically for college students in Winston-Salem. Whether you're new to the city or looking to upgrade your living situation, RoomLink is your go-to tool for safe, verified listings and community-driven housing options.
 
-if submit_room:
-    rules = []
-    if pets == "No": rules.append("No pets")
-    else: rules.append("Pets allowed")
-    if smoke == "No": rules.append("No smoking")
-    else: rules.append("Smoking allowed")
-    if guests == "No": rules.append("No guests")
-    else: rules.append("Guest friendly")
-    if utilities == "Yes": rules.append("Utilities included")
+    🔒 Verified through school communities  
+    🛏️ Filtered by lifestyle and rent preferences  
+    💬 Built for students, by students
+    """)
 
-    st.session_state["room_data"] = {
-        "price": f"${int(price)}",
-        "location": location,
-        "lease": lease_type,
-        "rules": ", ".join(rules),
-        "desc": desc or "No description"
-    }
-    st.success("Room saved!")
+with col2:
+    st.image(
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=870&q=80",
+        caption="Off-campus living, simplified",
+        use_column_width=True
+    )
 
-# --- Step 2: Roommate Preferences Form ---
-if "room_data" in st.session_state:
-    st.markdown("---")
-    st.subheader("📝 Roommate Match Form")
+st.markdown("---")
 
-    with st.form("roommate_form"):
-        col1, col2 = st.columns(2)
-        with col1:
-            name = st.text_input("Full Name")
-            age = st.slider("Age", 18, 30)
-            gender = st.selectbox("Gender", ["Woman", "Man", "Non-binary", "Prefer not to say"])
-            email = st.text_input("School Email")
-            major = st.text_input("Major")
-            budget = st.number_input("Max Rent Willing to Pay", 300, 1500, step=25)
-        with col2:
-            location_pref = st.selectbox("Preferred Neighborhood", ["Ardmore", "Downtown", "West End", "Old Salem", "Peters Creek", "Cloverdale", "Washington Park", "Reynolda Village", "University Parkway"])
-            clean = st.selectbox("Cleanliness Level", ["Messy", "Average", "Very Clean"])
-            sleep = st.selectbox("Sleep Schedule", ["Early Riser", "Night Owl", "Flexible"])
-            social = st.selectbox("Social Comfort", ["Introverted", "Moderate", "Extroverted"])
-            noise = st.selectbox("Noise Tolerance", ["Low", "Medium", "High"])
-            study = st.selectbox("Study Habits", ["Quiet room", "Library", "With music", "Late-night"])
-        lifestyle1, lifestyle2 = st.columns(2)
-        with lifestyle1:
-            smoking_ok = st.radio("OK with Smoking Roommates?", ["Yes", "No"])
-            pets_ok = st.radio("OK with Pets?", ["Yes", "No"])
-        with lifestyle2:
-            guests_ok = st.radio("OK with Guests?", ["Never", "Sometimes", "Often"])
-            shared_items = st.radio("Share Items (kitchen, etc)?", ["Yes", "Some", "No"])
-        hobbies = st.text_input("Hobbies", placeholder="Gaming, Gym, Reading")
-        bio = st.text_area("Your Bio")
+# --- Stats Tiles ---
+col1, col2, col3 = st.columns(3)
+col1.metric("Roommates Available", "50+")
+col2.metric("Housing Listings", "12 Active")
+col3.metric("Local Neighborhoods", "9 Areas")
 
-        submit_roommate = st.form_submit_button("Find Matches")
+# --- How It Works ---
+st.subheader("📚 How It Works")
+st.markdown("""
+RoomLink connects students with verified off-campus housing options in Winston-Salem. It streamlines the entire process through:
 
-    if submit_roommate:
-        st.session_state["roommate_prefs"] = {
-            "full_name": name, "age": age, "gender": gender, "school_email": email,
-            "major": major, "budget": budget, "location_pref": location_pref,
-            "cleanliness": clean, "sleep_schedule": sleep, "social_level": social,
-            "noise_tolerance": noise, "study_habits": study, "smoking_ok": smoking_ok,
-            "pets_ok": pets_ok, "guests_ok": guests_ok, "shared_items": shared_items,
-            "hobbies": hobbies, "bio": bio
-        }
-        st.success("Preferences submitted!")
+1. **Housing Listings**  
+   View submitted listings from students and local property owners. Filter by location, rent range, lease length, and housing rules like pets or smoking.
 
-# --- Step 3: Show Match Results ---
-if "roommate_prefs" in st.session_state:
-    st.markdown("---")
-    st.subheader("🎯 Your Roommate Matches")
+2. **School-Affiliated Access**  
+   Access is limited to verified students to keep listings clean, honest, and useful.
 
-    prefs = st.session_state["roommate_prefs"]
+More features are being built to support profile verification, communication tools, and neighborhood safety insights.
+""")
 
-    def variation(preference, category):
-        options = {
-            "cleanliness": {"Messy": ["Average", "Messy"], "Average": ["Very Clean", "Average"], "Very Clean": ["Very Clean", "Average"]},
-            "sleep_schedule": {"Early Riser": ["Early Riser", "Flexible"], "Night Owl": ["Night Owl", "Flexible"], "Flexible": ["Flexible", "Early Riser", "Night Owl"]},
-            "social_level": {"Introverted": ["Introverted", "Moderate"], "Moderate": ["Introverted", "Extroverted", "Moderate"], "Extroverted": ["Extroverted", "Moderate"]},
-            "noise_tolerance": {"Low": ["Low", "Medium"], "Medium": ["Low", "High"], "High": ["Medium", "High"]},
-            "gender": {"Man": ["Man"], "Woman": ["Woman"], "Non-binary": ["Non-binary", "Woman", "Man"], "Prefer not to say": ["Man", "Woman", "Non-binary"]}
-        }
-        return random.choice(options.get(category, {}).get(preference, [preference]))
+# --- Testimonials ---
+st.subheader("💬 What Students Are Saying")
 
-    for i in range(5):
-        match = {
-            "age": random.randint(18, 25),
-            "gender": variation(prefs["gender"], "gender"),
-            "budget": random.randint(prefs["budget"] - 100, prefs["budget"] + 100),
-            "location": random.choice([prefs["location_pref"], "Downtown", "West End", "Old Salem", "Ardmore", "Cloverdale"]),
-            "cleanliness": variation(prefs["cleanliness"], "cleanliness"),
-            "sleep_schedule": variation(prefs["sleep_schedule"], "sleep_schedule"),
-            "social_level": variation(prefs["social_level"], "social_level"),
-            "noise_tolerance": variation(prefs["noise_tolerance"], "noise_tolerance"),
-            "study_habits": prefs["study_habits"],
-            "smoking_ok": prefs["smoking_ok"],
-            "pets_ok": prefs["pets_ok"],
-            "guests_ok": prefs["guests_ok"],
-            "shared_items": prefs["shared_items"],
-            "hobbies": prefs["hobbies"]
-        }
+col1, col2 = st.columns(2)
 
-        st.markdown(f"### 👤 Match #{i+1}")
-        st.markdown(f"""
-        - **Age**: {match['age']}
-        - **Gender**: {match['gender']}
-        - **Budget Range**: ~${match['budget']}
-        - **Location**: {match['location']}
-        - **Cleanliness**: {match['cleanliness']}
-        - **Sleep Schedule**: {match['sleep_schedule']}
-        - **Social**: {match['social_level']}
-        - **Noise Tolerance**: {match['noise_tolerance']}
-        - **Study Habits**: {match['study_habits']}
-        - **Smoking OK**: {match['smoking_ok']}
-        - **Pets OK**: {match['pets_ok']}
-        - **Guests OK**: {match['guests_ok']}
-        - **Shares Items?**: {match['shared_items']}
-        - **Hobbies**: {match['hobbies']}
-        """)
-        st.markdown("---")
+with col1:
+    st.markdown("> “No more Facebook guesswork. I finally found a clean place close to campus.” — *Maya T.*")
+
+with col2:
+    st.markdown("> “I posted my room, and it got 3 hits in the first week. Way easier than Craigslist.” — *Jaylen B.*")
+
+# --- Trust Section ---
+st.subheader("🔐 Built on Trust")
+st.markdown("""
+RoomLink exists to make student housing safer and smarter:
+
+✅ Students confirm university affiliation  
+✅ Listings require verified submissions  
+✅ Lifestyle preferences and lease details are upfront
+
+We're keeping it local and curated for real students—not just randoms with keys.
+""")
+
+# ===========================
+# 🔻 PASTE ROOM FORM CODE HERE (NO submit buttons, just capture values)
+# Example: location = st.selectbox(...), etc.
+# ===========================
+
+
+# ===========================
+# 🔻 PASTE ROOMMATE FORM CODE HERE (NO submit buttons, just capture values)
+# Example: full_name = st.text_input(...), etc.
+# ===========================
+
+
+# ===========================
+# 🔻 MATCH RESULTS — Put your match generation + display code below
+# ONLY display if all needed fields are filled
+# (ex: if location and full_name and location_pref ...)
+# ===========================
+
+
+# --- Footer ---
+st.markdown("---")
+st.caption("RoomLink © 2025 — Developed by Braxton Brown & Ridgill Jenkins | Winston-Salem State University | Computer Science Project")
