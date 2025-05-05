@@ -3,6 +3,8 @@ from faker import Faker
 import random
 from PIL import Image
 
+fake = Faker()
+
 # --- Page Configuration ---
 st.set_page_config(
     page_title="RoomLink | Off-Campus Student Housing",
@@ -265,7 +267,7 @@ if "user_preferences" in st.session_state:
         }
         return random.choice(variations.get(category, {}).get(preference, [preference]))
 
-    def generate_matches(prefs):
+def generate_matches(prefs):
     listing = st.session_state.get("current_listing", {})
     base_budget = int(listing.get("price", "$1000").replace("$", ""))
     base_location = listing.get("location", "Downtown")
@@ -297,16 +299,16 @@ if "user_preferences" in st.session_state:
 
     for idx, m in enumerate(matches):
         def random_name(gender):
-    if gender == "Man":
-        return fake.name_male()
-    elif gender == "Woman":
-        return fake.name_female()
-    else:
-        return fake.name()
+            if gender == "Man":
+                return fake.name_male()
+            elif gender == "Woman":
+                return fake.name_female()
+            else:
+                return fake.name()
 
-name = random_name(m['gender'])
-first, last = name.split(" ")[0], name.split(" ")[-1]
-username = f"{first[0].lower()}{last.lower()}{random.randint(10, 99)}"
+        name = random_name(m['gender'])
+        first, last = name.split(" ")[0], name.split(" ")[-1]
+        username = f"{first[0].lower()}{last.lower()}{random.randint(10, 99)}"
 
         st.markdown(f"### 🧑 Match #{idx+1} — **{name}**")
         st.markdown(f"""
