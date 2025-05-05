@@ -82,8 +82,10 @@ if submitted:
         st.error(f"Failed to save listing: {e}")
         st.stop()
 
-    # Mark form as complete and redirect
+        # Mark form as complete
     st.session_state["room_form_completed"] = True
     st.success("✅ Listing submitted! Redirecting you to the Roommate Form...")
-    st.rerun()  # Ensure session is saved before switching
+
+    # Trigger navigation
+    st.experimental_set_query_params(page="roommate_form")  # Optional breadcrumb
     st.switch_page("pages/roommate_form.py")
