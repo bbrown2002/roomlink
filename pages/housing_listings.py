@@ -7,11 +7,8 @@ st.title("🏡 Available Housing Listings")
 st.markdown("Explore current off-campus housing options submitted by students and verified listers. Listings include location, rent, amenities, and rules.")
 st.markdown("---")
 
-# Define path to CSV
-csv_path = "housing_listings.csv"  # no folder, file is in the root directory
-
-# Ensure 'data/' folder exists
-os.makedirs("data", exist_ok=True)
+# Path to CSV in root directory
+csv_path = "housing_listings.csv"
 
 # If CSV doesn't exist, create it with headers
 if not os.path.exists(csv_path):
