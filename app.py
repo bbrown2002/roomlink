@@ -225,7 +225,6 @@ st.session_state["user_preferences"] = {
 
 # ===========================
 # --- Roommate Match Results ---
-import random
 
 if "user_preferences" in st.session_state:
     prefs = st.session_state["user_preferences"]
@@ -267,45 +266,44 @@ if "user_preferences" in st.session_state:
         }
         return random.choice(variations.get(category, {}).get(preference, [preference]))
 
-def generate_matches(prefs):
-    listing = st.session_state.get("current_listing", {})
-    base_budget = int(listing.get("price", "$1000").replace("$", ""))
-    base_location = listing.get("location", "Downtown")
+    def generate_matches(prefs):
+        listing = st.session_state.get("current_listing", {})
+        base_budget = int(listing.get("price", "$1000").replace("$", ""))
+        base_location = listing.get("location", "Downtown")
 
-    matches = []
-    for i in range(5):
-        match = {
-            "age": random.randint(18, 25),
-            "gender": generate_variation(prefs["gender"], "gender"),
-            "budget": random.randint(base_budget - 100, base_budget + 100),
-            "location": base_location,
-            "cleanliness": generate_variation(prefs["cleanliness"], "cleanliness"),
-            "sleep_schedule": generate_variation(prefs["sleep_schedule"], "sleep_schedule"),
-            "social_level": generate_variation(prefs["social_level"], "social_level"),
-            "noise_tolerance": generate_variation(prefs["noise_tolerance"], "noise_tolerance"),
-            "study_habits": prefs["study_habits"],
-            "smoking_ok": prefs["smoking_ok"],
-            "pets_ok": prefs["pets_ok"],
-            "guests_ok": prefs["guests_ok"],
-            "shared_items": prefs["shared_items"],
-            "hobbies": prefs["hobbies"] or "Not specified",
-        }
-        matches.append(match)
+        matches = []
+        for i in range(5):
+            match = {
+                "age": random.randint(18, 25),
+                "gender": generate_variation(prefs["gender"], "gender"),
+                "budget": random.randint(base_budget - 100, base_budget + 100),
+                "location": base_location,
+                "cleanliness": generate_variation(prefs["cleanliness"], "cleanliness"),
+                "sleep_schedule": generate_variation(prefs["sleep_schedule"], "sleep_schedule"),
+                "social_level": generate_variation(prefs["social_level"], "social_level"),
+                "noise_tolerance": generate_variation(prefs["noise_tolerance"], "noise_tolerance"),
+                "study_habits": prefs["study_habits"],
+                "smoking_ok": prefs["smoking_ok"],
+                "pets_ok": prefs["pets_ok"],
+                "guests_ok": prefs["guests_ok"],
+                "shared_items": prefs["shared_items"],
+                "hobbies": prefs["hobbies"] or "Not specified",
+            }
+            matches.append(match)
 
-    return matches  # ← make sure this is aligned with `matches = []` above
-
+        return matches
 
     matches = generate_matches(prefs)
 
-    for idx, m in enumerate(matches):
-        def random_name(gender):
-            if gender == "Man":
-                return fake.name_male()
-            elif gender == "Woman":
-                return fake.name_female()
-            else:
-                return fake.name()
+    def random_name(gender):
+        if gender == "Man":
+            return fake.name_male()
+        elif gender == "Woman":
+            return fake.name_female()
+        else:
+            return fake.name()
 
+    for idx, m in enumerate(matches):
         name = random_name(m['gender'])
         first, last = name.split(" ")[0], name.split(" ")[-1]
         username = f"{first[0].lower()}{last.lower()}{random.randint(10, 99)}"
@@ -333,10 +331,11 @@ def generate_matches(prefs):
             st.write("**Status:** Online now ✅")
             st.text_area("Send a message...", placeholder=f"Hey! I'm also looking to live around {m['location']} — want to connect?", key=f"msg_text_{idx}")
             st.button("📨 Send Message", key=f"msg_btn_{idx}")
-        
+
         st.markdown("---")
 else:
     st.info("Fill out the housing and roommate forms above to see your matches.")
+
 
 # ===========================
 
