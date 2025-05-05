@@ -3,7 +3,7 @@ from PIL import Image
 
 # --- Page Configuration ---
 st.set_page_config(
-    page_title="RoomLink | Find Your Next Roommate",
+    page_title="RoomLink | Off-Campus Student Housing",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -36,8 +36,6 @@ st.markdown("""
 with st.sidebar:
     st.markdown("## 📂 Navigation")
     st.page_link("app.py", label="🏠 Home", icon="🏠")
-    st.page_link("pages/room_form.py", label="📬 Submit a Room Listing", icon="📦")
-    st.page_link("pages/housing_listings.py", label="🏡 View Housing Listings", icon="📍")
 
 # --- Header ---
 st.markdown('<p class="roomlink-header">RoomLink</p>', unsafe_allow_html=True)
@@ -50,16 +48,12 @@ col1, col2 = st.columns([1, 1])
 with col1:
     st.subheader("🏠 Welcome to RoomLink")
     st.markdown("""
-    **RoomLink** is a web-based housing and roommate discovery tool designed specifically for college students in Winston-Salem. Whether you're new to campus or just tired of unreliable roommate hookups, RoomLink puts everything in one place — clean, simple, and built with your needs in mind.
+    **RoomLink** is a web-based off-campus housing resource designed specifically for college students in Winston-Salem. Whether you're new to the city or looking to upgrade your living situation, RoomLink is your go-to tool for safe, verified listings and community-driven housing options.
 
     🔒 Verified through school communities  
     🛏️ Filtered by lifestyle and rent preferences  
-    💬 Easy access to listings and profiles
+    💬 Built for students, by students
     """)
-
-    st.markdown("### 🚀 Get Started:")
-    if st.button("🏡  Find Housing"):
-        st.switch_page("pages/housing_listings.py")
 
 with col2:
     st.image(
@@ -79,48 +73,39 @@ col3.metric("Local Neighborhoods", "9 Areas")
 # --- How It Works ---
 st.subheader("📚 How It Works")
 st.markdown("""
-RoomLink connects students with local off-campus housing and roommate opportunities through two main systems:
+RoomLink connects students with verified off-campus housing options in Winston-Salem. It streamlines the entire process through:
 
-1. **Roommate Directory**  
-   Browse verified student profiles, each with habits, lifestyle preferences, rent expectations, and availability. Use filters to match with roommates who actually fit your vibe.
+1. **Housing Listings**  
+   View submitted listings from students and local property owners. Filter by location, rent range, lease length, and housing rules like pets or smoking.
 
-2. **Housing Listings**  
-   Scroll listings from students and landlords in popular student neighborhoods. Filter by rent, lease terms, and rules like pets or smoking.
+2. **School-Affiliated Access**  
+   Access is limited to verified students to keep listings clean, honest, and useful.
 
-3. **Submit a Room**  
-   List an available space with clean, simple forms. All data stays local and secure.
-
-Together, these tools create a trusted network for college housing in Winston-Salem.
+More features are being built to support profile verification, communication tools, and neighborhood safety insights.
 """)
 
 # --- Testimonials ---
 st.subheader("💬 What Students Are Saying")
 
 col1, col2 = st.columns(2)
+
 with col1:
-    st.markdown("> “I found someone who matches my sleep schedule and study habits. I don’t miss random roommates at all.” — *Maya T.*")
+    st.markdown("> “No more Facebook guesswork. I finally found a clean place close to campus.” — *Maya T.*")
+
 with col2:
-    st.markdown("> “I posted my extra room and had three people hit me up by the end of the week. Easy and clean.” — *Jaylen B.*")
+    st.markdown("> “I posted my room, and it got 3 hits in the first week. Way easier than Craigslist.” — *Jaylen B.*")
 
 # --- Trust Section ---
 st.subheader("🔐 Built on Trust")
 st.markdown("""
-RoomLink is designed for one thing: **student safety**. We don’t just throw listings and bios on a page. Every form asks the right questions, and every profile prioritizes compatibility and real-life living.
+RoomLink exists to make student housing safer and smarter:
 
-✅ Students verify school status in submissions  
-✅ No random strangers — just students looking to live right  
-✅ No distractions — just clean housing and roommate info
+✅ Students confirm university affiliation  
+✅ Listings require verified submissions  
+✅ Lifestyle preferences and lease details are upfront
 
-Future upgrades may include messaging, .edu email sign-ins, and verified reviews.
+We're keeping it local and curated for real students—not just randoms with keys.
 """)
-
-# --- Call to Action Banner ---
-st.markdown("""
-<div class="section-box">
-<h4 style='margin-bottom:10px;'>Want to get listed?</h4>
-<p>Fill out the housing form today and join the network. Whether you need a spot or have one to share — RoomLink makes it easy.</p>
-</div>
-""", unsafe_allow_html=True)
 
 # --- Footer ---
 st.markdown("---")
