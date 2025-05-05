@@ -7,14 +7,14 @@ st.title("🏡 Available Housing Listings")
 st.markdown("Explore current off-campus housing options submitted by students and verified listers. Listings include location, rent, amenities, and rules.")
 st.markdown("---")
 
-# --- Path to CSV (must be in root directory, already uploaded manually) ---
+# --- Path to CSV (must already exist in the root folder) ---
 csv_path = "housing_listings.csv"
 
-# --- Load saved listings ---
+# --- Load existing CSV only (no writing)
 try:
     df = pd.read_csv(csv_path)
-except FileNotFoundError:
-    st.error("🚫 housing_listings.csv not found. Please upload the file to the root directory.")
+except Exception as e:
+    st.error("🚫 Could not load 'housing_listings.csv'. Make sure the file is uploaded to the root directory and properly formatted.")
     st.stop()
 
 # --- Filter UI ---
@@ -22,14 +22,14 @@ if not df.empty:
     st.sidebar.header("🔍 Filter Listings")
 
     # Price range filter
+    df["numeric_price"] = df["price"].str.extract('(\d+)').astype(float)
     min_price, max_price = st.sidebar.slider("Monthly Rent ($)", 300, 2000, (500, 1000), step=50)
 
     # Location filter
     unique_locations = df["location"].dropna().unique().tolist()
     selected_locations = st.sidebar.multiselect("Filter by Location", unique_locations, default=unique_locations)
 
-    # Filter DataFrame
-    df["numeric_price"] = df["price"].str.extract('(\d+)').astype(float)
+    # Apply filters
     filtered_df = df[
         (df["numeric_price"] >= min_price) &
         (df["numeric_price"] <= max_price) &
