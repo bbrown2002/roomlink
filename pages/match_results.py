@@ -54,7 +54,7 @@ def generate_variation(preference, category):
 # --- Generate Matches ---
 def generate_matches(prefs):
     matches = []
-    for _ in range(5):
+    for i in range(5):
         match = {
             "age": random.randint(18, 25),
             "gender": generate_variation(prefs["gender"], "gender"),
@@ -98,12 +98,14 @@ for idx, m in enumerate(matches):
     - **Willing to Share Items**: {m['shared_items']}
     - **Shared Interests**: {m['hobbies']}
     """)
-    st.markdown("    with st.expander("💬 Contact Preview"):
-        st.write("**Username:** match_user_" + str(idx+1))
+    
+    with st.expander("💬 Contact Preview"):
+        st.write(f"**Username:** match_user_{idx+1}")
         st.write("**Status:** Online now ✅")
-        st.text_area("Send a message...", placeholder="Hey! I'm also looking to live around " + m['location'] + " — want to connect?")
+        st.text_area("Send a message...", placeholder=f"Hey! I'm also looking to live around {m['location']} — want to connect?", key=f"msg_text_{idx}")
         st.button("📨 Send Message", key=f"msg_btn_{idx}")
-")
+    
+    st.markdown("---")
 
 # --- Action Buttons ---
 col1, col2 = st.columns(2)
