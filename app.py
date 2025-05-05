@@ -36,11 +36,10 @@ st.markdown("""
 with st.sidebar:
     st.markdown("## 📂 Navigation")
     st.page_link("app.py", label="🏠 Home", icon="🏠")
-    st.write("🧑‍🤝‍🧑 Roommate Directory (coming soon)")
-    st.write("🏡 Housing Listings (coming soon)")
-    st.write("📝 Submit Roommate Info (coming soon)")
-    st.write("📬 List Your Room (coming soon)")
-    st.write("🔐 About RoomLink (coming soon)")
+    st.page_link("roommate_form.py", label="📝 Roommate Match Form", icon="🧑‍🤝‍🧑")
+    st.page_link("match_results.py", label="🎯 Roommate Matches", icon="🎯")
+    st.page_link("room_form.py", label="📬 Submit a Room Listing", icon="📦")
+    st.page_link("housing_listings.py", label="🏡 View Housing Listings", icon="📍")
 
 # --- Header ---
 st.markdown('<p class="roomlink-header">RoomLink</p>', unsafe_allow_html=True)
