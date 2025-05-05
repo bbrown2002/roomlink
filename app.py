@@ -103,8 +103,63 @@ We're keeping it local and curated for real students—not just randoms with key
 """)
 
 # ===========================
-# 🔻 PASTE ROOM FORM CODE HERE (NO submit buttons, just capture values)
-# Example: location = st.selectbox(...), etc.
+# --- ROOM FORM SECTION ---
+st.subheader("📬 Submit a Room or Property")
+
+st.markdown("""
+Use this section to list an available room, apartment, or housing unit for students in the Winston-Salem area.
+Details will be used to filter and generate roommate match context.
+""")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    location = st.selectbox("Neighborhood or Area", [
+        "Ardmore", "Cloverdale", "West End", "Downtown", "Old Salem",
+        "Reynolda Village", "Washington Park", "University Parkway"
+    ])
+    price = st.number_input("Monthly Rent ($)", min_value=300, max_value=2000, step=25)
+    lease_type = st.selectbox("Lease Type", ["Month-to-month", "6 months", "9 months", "12 months", "Flexible"])
+
+with col2:
+    pets_allowed = st.radio("Pets Allowed?", ["Yes", "No"])
+    smoking_policy = st.radio("Smoking Allowed?", ["Yes", "No"])
+    guest_policy = st.radio("Guests Allowed?", ["Yes", "No"])
+    utilities_included = st.radio("Utilities Included?", ["Yes", "No"])
+
+st.markdown("### 📝 Description & Notes")
+description = st.text_area("Write a short description about the room, amenities, or rules", height=150)
+
+# --- Build "rules" string on the fly ---
+rules = []
+if pets_allowed == "Yes":
+    rules.append("Pets allowed")
+else:
+    rules.append("No pets")
+
+if smoking_policy == "Yes":
+    rules.append("Smoking allowed")
+else:
+    rules.append("No smoking")
+
+if guest_policy == "Yes":
+    rules.append("Guest friendly")
+else:
+    rules.append("No guests")
+
+if utilities_included == "Yes":
+    rules.append("Utilities included")
+
+rules_str = ", ".join(rules)
+
+# --- Store listing in session_state (optional) ---
+st.session_state["current_listing"] = {
+    "price": f"${int(price)}",
+    "location": location,
+    "lease": lease_type,
+    "rules": rules_str,
+    "desc": description or "No description provided."
+}
 # ===========================
 
 
