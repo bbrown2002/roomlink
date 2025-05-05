@@ -1,22 +1,21 @@
 import streamlit as st
 import pandas as pd
-import os
 
+# --- Page Configuration ---
 st.set_page_config(page_title="Available Housing Listings", layout="wide")
 st.title("🏡 Available Housing Listings")
 st.markdown("Explore current off-campus housing options submitted by students and verified listers. Listings include location, rent, amenities, and rules.")
 st.markdown("---")
 
-# Path to CSV in root directory
+# --- Path to CSV (must be in root directory, already uploaded manually) ---
 csv_path = "housing_listings.csv"
 
-# If CSV doesn't exist, create it with headers
-if not os.path.exists(csv_path):
-    df_empty = pd.DataFrame(columns=["price", "location", "lease", "rules", "desc"])
-    df_empty.to_csv(csv_path, index=False)
-
-# Load saved listings
-df = pd.read_csv(csv_path)
+# --- Load saved listings ---
+try:
+    df = pd.read_csv(csv_path)
+except FileNotFoundError:
+    st.error("🚫 housing_listings.csv not found. Please upload the file to the root directory.")
+    st.stop()
 
 # --- Filter UI ---
 if not df.empty:
