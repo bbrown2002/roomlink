@@ -98,7 +98,12 @@ for idx, m in enumerate(matches):
     - **Willing to Share Items**: {m['shared_items']}
     - **Shared Interests**: {m['hobbies']}
     """)
-    st.markdown("---")
+    st.markdown("    with st.expander("💬 Contact Preview"):
+        st.write("**Username:** match_user_" + str(idx+1))
+        st.write("**Status:** Online now ✅")
+        st.text_area("Send a message...", placeholder="Hey! I'm also looking to live around " + m['location'] + " — want to connect?")
+        st.button("📨 Send Message", key=f"msg_btn_{idx}")
+")
 
 # --- Action Buttons ---
 col1, col2 = st.columns(2)
