@@ -1,10 +1,15 @@
 import streamlit as st
 
+# --- Page Config ---
 st.set_page_config(page_title="Roommate Match Form", layout="wide")
+
+# --- Block if room form not completed ---
+if "room_form_completed" not in st.session_state:
+    st.warning("⚠️ Please submit the Room Form first before filling this out.")
+    st.stop()
 
 st.title("📝 Roommate Match Form")
 st.markdown("Fill out the form below to help us find roommate matches that fit your lifestyle, preferences, and personality.")
-
 st.markdown("---")
 
 with st.form("match_form"):
@@ -47,9 +52,8 @@ with st.form("match_form"):
     submitted = st.form_submit_button("Submit and See Matches")
 
     if submitted:
-        st.success("Form submitted successfully! Generating your matches...")
+        st.success("✅ Form submitted successfully! Redirecting you to matches...")
 
-        # Save to session state for match_results.py
         st.session_state["user_preferences"] = {
             "full_name": full_name,
             "age": age,
@@ -71,4 +75,4 @@ with st.form("match_form"):
             "bio": bio
         }
 
-        st.markdown("👉 [Click here to view your roommate matches](match_results.py)")
+        st.switch_page("pages/match_results.py")
