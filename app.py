@@ -62,6 +62,50 @@ with col2:
 
 st.markdown("---")
 
+# Define apartments grouped by neighborhood
+neighborhood_apartments = {
+    "Ardmore": [
+        "Legacy at Ardmore - 1606 Covington Heights Cir",
+        "Ardmore Terrace - 2325 Cloverdale Ave",
+        "Village at Ardmore Landing - 2225 Silas Creek Pkwy"
+    ],
+    "Cloverdale": [
+        "Cloverdale Apartments - Near Cloverdale Plaza",
+        "Cloverdale Plaza Apartments - Adjacent to Plaza",
+        "Ardmore Terrace - 2325 Cloverdale Ave"
+    ],
+    "West End": [
+        "West End Station - 206 N Green St",
+        "4th and Green - 822 W 4th St",
+        "The Easley - 994 W 2nd St"
+    ],
+    "Downtown": [
+        "Link Apartments® 4th Street - 501 W 4th St",
+        "The Easley - 994 W 2nd St",
+        "The Artreaux - 950 N Trade St"
+    ],
+    "Old Salem": [
+        "Belo House - 455 S Main St",
+        "Old Salem Apartments - Near Museums & Gardens",
+        "Historic District Rentals - Old Salem Area"
+    ],
+    "Reynolda Village": [
+        "Pine Ridge at Reynolda - 3736 Reynolda Rd",
+        "Corners at Crystal Lake - 2700 Reynolda Rd",
+        "Reynolda Manor Apartments - 3736 Reynolda Rd"
+    ],
+    "Washington Park": [
+        "255 Bond St Unit",
+        "830 S Broad St - Remodeled Home",
+        "2123 Hollyrood Street Apartments"
+    ],
+    "University Parkway": [
+        "Assembly Terrace - 3731 University Pkwy",
+        "Northcliffe Forest - 2030 Northcliffe Dr",
+        "Beltway Park Apartments - 114 Penner St"
+    ]
+}
+
 # --- Stats Tiles ---
 col1, col2, col3 = st.columns(3)
 col1.metric("Roommates Available", "50+")
@@ -276,7 +320,7 @@ if "user_preferences" in st.session_state:
                 "age": random.randint(18, 25),
                 "gender": generate_variation(prefs["gender"], "gender"),
                 "budget": random.randint(base_budget - 100, base_budget + 100),
-                "location": base_location,
+                "location": random.choice(neighborhood_apartments.get(base_location, [base_location])),
                 "cleanliness": generate_variation(prefs["cleanliness"], "cleanliness"),
                 "sleep_schedule": generate_variation(prefs["sleep_schedule"], "sleep_schedule"),
                 "social_level": generate_variation(prefs["social_level"], "social_level"),
@@ -307,7 +351,7 @@ if "user_preferences" in st.session_state:
         first, last = name.split(" ")[0], name.split(" ")[-1]
         username = f"{first[0].lower()}{last.lower()}{random.randint(10, 99)}"
 
-        st.markdown(f"### 🧑 Match #{idx+1} — **{name}**")
+        st.markdown(f"### Match #{idx+1} — **{name}**")
         st.markdown(f"""
         - **Age**: {m['age']}
         - **Gender**: {m['gender']}
