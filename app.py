@@ -53,13 +53,6 @@ with col1:
     💬 Built for students, by students
     """)
 
-with col2:
-st.image(
-    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=870&q=80",
-    caption="Off-campus living, simplified",
-    use_container_width=True  # ✅ Fix: updated parameter
-)
-
 st.markdown("---")
 
 # Define apartments grouped by neighborhood
