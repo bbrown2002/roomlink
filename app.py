@@ -107,51 +107,51 @@ We're keeping it local and curated for real students—not just randoms with key
 
 # ===========================
 # --- ROOM FORM SECTION ---
-st.subheader("📬 Submit a Room or Property")
+st.subheader("📬 Looking for a Room")
 
 st.markdown("""
-Use this section to list an available room, apartment, or housing unit for students in the Winston-Salem area.
-Details will be used to filter and generate roommate match context.
+Use this section to share what you're looking for in a room, apartment, or housing setup in the Winston-Salem area.
+Your info will help match you with listings and roommates that fit your needs.
 """)
 
 col1, col2 = st.columns(2)
 
 with col1:
-    location = st.selectbox("Neighborhood or Area", [
+    location = st.selectbox("Preferred Neighborhood or Area", [
         "Ardmore", "Cloverdale", "West End", "Downtown", "Old Salem",
         "Reynolda Village", "Washington Park", "University Parkway"
     ])
-    price = st.number_input("Monthly Rent ($)", min_value=300, max_value=2000, step=25)
-    lease_type = st.selectbox("Lease Type", ["Month-to-month", "6 months", "9 months", "12 months", "Flexible"])
+    price = st.number_input("Maximum Monthly Rent ($)", min_value=300, max_value=2000, step=25)
+    lease_type = st.selectbox("Preferred Lease Type", ["Month-to-month", "6 months", "9 months", "12 months", "Flexible"])
 
 with col2:
-    pets_allowed = st.radio("Pets Allowed?", ["Yes", "No"])
-    smoking_policy = st.radio("Smoking Allowed?", ["Yes", "No"])
-    guest_policy = st.radio("Guests Allowed?", ["Yes", "No"])
-    utilities_included = st.radio("Utilities Included?", ["Yes", "No"])
+    pets_allowed = st.radio("Can Live with Pets?", ["Yes", "No"])
+    smoking_policy = st.radio("Can Live with Smokers?", ["Yes", "No"])
+    guest_policy = st.radio("Okay with Guests?", ["Yes", "No"])
+    utilities_included = st.radio("Need Utilities Included?", ["Yes", "No"])
 
-st.markdown("### 📝 Description & Notes")
-description = st.text_area("Write a short description about the room, amenities, or rules", height=150)
+st.markdown("### 📝 Additional Notes")
+description = st.text_area("Write a short description of your ideal setup, roommate expectations, or deal-breakers", height=150)
 
 # --- Build "rules" string on the fly ---
 rules = []
 if pets_allowed == "Yes":
-    rules.append("Pets allowed")
+    rules.append("Pet friendly")
 else:
     rules.append("No pets")
 
 if smoking_policy == "Yes":
-    rules.append("Smoking allowed")
+    rules.append("Can live with smokers")
 else:
-    rules.append("No smoking")
+    rules.append("Non-smoking only")
 
 if guest_policy == "Yes":
     rules.append("Guest friendly")
 else:
-    rules.append("No guests")
+    rules.append("No guests preferred")
 
 if utilities_included == "Yes":
-    rules.append("Utilities included")
+    rules.append("Needs utilities included")
 
 rules_str = ", ".join(rules)
 
